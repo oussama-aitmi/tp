@@ -6,20 +6,19 @@
 ```console
 git clone ...
 
-cd library_php_symfony
+cd TP
 docker-compose up -d --build
 docker exec -it php-fpm bash
 composer update
-symfony console doctrine:database:create
-symfony console make:migration
-symfony console doctrine:migrations:migrate
+
 ```
 
 Vous devez pouvoir acceder à l'application depuis URL: http://localhost/
 
-
+Creation Bd & migrations
 
 ```console
-php bin/console make:migration
-php bin/console doctrine:migrations:migrate
+bin/console doctrine:database:create
+bin/console make:migration
+bin/console doctrine:migrations:migrate
 ```

@@ -95,7 +95,7 @@ class ProduitController extends AbstractController
      *     )
      * )
      */
-    #[Route('/api/produits', methods: ['POST'])]
+    #[Route('/api/products', methods: ['POST'])]
     public function create(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
@@ -123,7 +123,7 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/api/produits/{id}", name="get_produit", methods={"GET"})
+     * @Route("/api/products/{id}", name="get_produit", methods={"GET"})
      */
     public function getProduit(int $id): JsonResponse
     {
@@ -137,7 +137,7 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/api/produits/{id}", name="update_produit", methods={"PUT", "PATCH"})
+     * @Route("/api/products/{id}", name="update_produit", methods={"PUT", "PATCH"})
      */
     public function updateProduit(int $id, Request $request): JsonResponse
     {
