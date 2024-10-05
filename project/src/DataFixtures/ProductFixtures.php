@@ -2,15 +2,15 @@
 namespace App\DataFixtures;
 
 use App\Entity\Produit;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use App\Enum\InventoryStatus;
 use Doctrine\Persistence\ObjectManager;
 
-class ProductFixtures extends BaseFixture implements DependentFixtureInterface
+class ProductFixtures extends BaseFixture
 {
 
     protected function loadData(ObjectManager $manager): void
     {
-        $this->createMany(10, 'main_product', function($count) use ($manager) {
+        $this->createMany(25, 'main_product', function($count) use ($manager) {
             $product = new Produit();
             $product->setCode('P' . $this->faker->unique()->numberBetween(100, 999));
             $product->setName($this->faker->word);
@@ -21,7 +21,10 @@ class ProductFixtures extends BaseFixture implements DependentFixtureInterface
             $product->setQuantity($this->faker->numberBetween(1, 50));
             $product->setInternalReference($this->faker->uuid);
             $product->setShellId($this->faker->randomNumber());
-            $product->setInventoryStatus($this->faker->randomElement(['INSTOCK', 'LOWSTOCK', 'OUTOFSTOCK']));
+            $product->setInventoryStatus([
+                InventoryStatus::from($this->faker->randomElement(['INSTOCK', 'LOWSTOCK', 'OUTOFSTOCK'])),
+                InventoryStatus::from($this->faker->randomElement(['INSTOCK', 'LOWSTOCK', 'OUTOFSTOCK']))
+            ]);
             $product->setRating($this->faker->numberBetween(1, 5));
             $manager->persist($product);
 

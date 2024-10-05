@@ -45,9 +45,9 @@ class Produit
     #[ORM\Column(type: 'integer')]
     private ?int $shellId = null;
 
-    #[Assert\Choice(callback: [InventoryStatus::class, 'cases'])]
-    #[ORM\Column(type: 'string', length: 120, enumType: InventoryStatus::class)]
-    private InventoryStatus $inventoryStatus;
+    #[ORM\Column(type: 'json', length: 150)]
+    #[Assert\NotBlank]
+    private array $inventoryStatus = [];
 
     #[ORM\Column(type: 'float', nullable: true)]
     private ?float $rating = null;
@@ -61,11 +61,6 @@ class Produit
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
-        $this->updatedAt = new DateTimeImmutable();
-    }
-
-    public function setUpdatedAt(): void
-    {
         $this->updatedAt = new DateTimeImmutable();
     }
 
@@ -164,14 +159,21 @@ class Produit
         $this->shellId = $shellId;
     }
 
-    public function getInventoryStatus(): ?InventoryStatus
+    public function setInventoryStatus(array $statuses): self
     {
-        return $this->inventoryStatus;
+        foreach ($statuses as $status) {
+            if (!($status instanceof InventoryStatus)) {
+                throw new \InvalidArgumentException("Invalid inventory status");
+            }
+        }
+        $this->inventoryStatus = $statuses;
+
+        return $this;
     }
 
-    public function setInventoryStatus(?InventoryStatus $inventoryStatus): void
+    public function getInventoryStatus(): array
     {
-        $this->inventoryStatus = $inventoryStatus;
+        return $this->inventoryStatus;
     }
 
     public function getRating(): ?float
@@ -192,5 +194,16 @@ class Produit
     public function setCreatedAt(?DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+
+    public function setUpdatedAt(): void
+    {
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
+    public function getUpdatedAt(): ?DateTimeImmutable
+    {
+        return $this->updatedAt;
     }
 }

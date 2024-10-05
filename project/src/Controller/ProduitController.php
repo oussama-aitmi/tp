@@ -112,8 +112,8 @@ class ProduitController extends AbstractController
             $data['internalReference'],
             $data['shellId'],
             $data['inventoryStatus'],
-            $data['rating'],
-            time(),
+            null,
+            null,
             null
         );
 
@@ -122,9 +122,7 @@ class ProduitController extends AbstractController
         return $this->json($produit, Response::HTTP_CREATED); //201 created
     }
 
-    /**
-     * @Route("/api/products/{id}", name="get_produit", methods={"GET"})
-     */
+    #[Route('/api/products/{id}', methods: ['GET'])]
     public function getProduit(int $id): JsonResponse
     {
         $produitDTO = $this->produitService->getProduit($id);
@@ -136,21 +134,31 @@ class ProduitController extends AbstractController
         return $this->json($produitDTO); //200
     }
 
-    /**
-     * @Route("/api/products/{id}", name="update_produit", methods={"PUT", "PATCH"})
-     */
-    public function updateProduit(int $id, Request $request): JsonResponse
+    #[Route('/api/products/{id}', name: 'update_product', methods: ['PUT', 'PATCH'])]
+    public function updateProduit(Request $request, int $id): JsonResponse
     {
-        $produit = $this->produitService->getProduit($id);
-
-        if (!$produit) {
-            return $this->json(['error' => 'Produit non trouvé'], 404);
-        }
-
         $data = json_decode($request->getContent(), true);
 
-        $produitDTO = $this->produitService->updateProduit($produit, $data);
+        $produitDTO = new ProduitDTO(
+            null,
+            $data['code'],
+            $data['name'],
+            $data['description'],
+            $data['image'],
+            $data['category'],
+            $data['price'],
+            $data['quantity'],
+            $data['internalReference'],
+            $data['shellId'],
+            $data['inventoryStatus'],
+            null,
+            null,
+            null
+        );
 
-        return $this->json($produitDTO, Response::HTTP_OK); // 200 avec contenu ou 204 (No Content)
+        return $this->json(
+            $this->produitService->updateProduit($id, $produitDTO),
+            Response::HTTP_OK
+        ); // 200 avec contenu ou 204 (No Content)
     }
 }
