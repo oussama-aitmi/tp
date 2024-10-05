@@ -1,4 +1,4 @@
-# Test KATA pour candidat Oussama Aitmi 
+# Test KATA 
 
 
 ## Install et démarrage de projet Kata (Symfony 6.4)
