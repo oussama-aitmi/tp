@@ -1,15 +1,13 @@
 <template>
   <div id="app">
-    <ProductForm
-        v-if="showForm"
-        :editMode="editMode"
-        :product="selectedProduct"
-        @submit="handleProductSubmit"
-    />
-    <ProductList
-        v-else
-        :products="products"
-        @add-to-cart="handleAddToCart"
+    <div class="navigation">
+      <button @click="currentView = 'list'">Liste des produits</button>
+      <button @click="currentView = 'form'">Ajouter un produit</button>
+    </div>
+    <ProductForm :produit="produit" v-if="currentView === 'form'"/>
+
+    <ProduitList
+        v-else-if="currentView === 'list'"
         @edit-product="handleEditProduct"
     />
     <Cart :cartItems="cartItems" />
@@ -18,15 +16,17 @@
 
 <script>
 import api from '@/api';
+import ProduitList from './components/ProductList.vue';
+import ProductForm from './components/ProductForm.vue';
 
 export default {
   data() {
     return {
-      products: [],
+      produit: null,
       cartItems: [],
-      showForm: false,
       editMode: false,
       selectedProduct: null,
+      currentView: 'list',
     };
   },
   methods: {
@@ -35,31 +35,30 @@ export default {
         this.products = response.data;
       });
     },
-    fetchCart() {
-      api.getCart().then(response => {
-        this.cartItems = response.data.items;
-      });
-    },
-    handleAddToCart(product) {
-      api.addToCart(product.id, 1).then(() => {
-        this.fetchCart();
-      });
-    },
+    // fetchCart() {
+    //   api.getCart().then(response => {
+    //     this.cartItems = response.data.items;
+    //   });
+    // },
+    // handleAddToCart(product) {
+    //   api.addToCart(product.id, 1).then(() => {
+    //     this.fetchCart();
+    //   });
+    // },
     handleEditProduct(product) {
-      this.selectedProduct = {...product};
-      this.editMode = true;
+      this.selectedProduct = product;
+      this.produit = product;
+      this.currentView = 'form';
       this.showForm = true;
     },
-    handleProductSubmit(product) {
-      this.fetchProducts();
-      this.showForm = false;
-      this.editMode = false;
-      this.selectedProduct = null;
-    }
   },
   mounted() {
     this.fetchProducts();
     this.fetchCart();
-  }
+  },
+  components: {
+    ProduitList,
+    ProductForm
+  },
 }
 </script>

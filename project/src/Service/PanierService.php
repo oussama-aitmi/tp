@@ -63,6 +63,6 @@ class PanierService
 
     public function getCurrentPanier()
     {
-        return $this->panierRepository->findOneBy(['id' => 1]); // normalent on cherche un panier de User connecté
+        return $this->panierRepository->findAll()[0]; // normalent on cherche un panier de User connecté
     }
 }
