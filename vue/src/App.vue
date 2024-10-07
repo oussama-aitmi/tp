@@ -10,7 +10,7 @@
         v-else-if="currentView === 'list'"
         @edit-product="handleEditProduct"
     />
-    <Cart :cartItems="cartItems" />
+<!--    <Cart :cartItems="cartItems" />-->
   </div>
 </template>
 
@@ -54,7 +54,7 @@ export default {
   },
   mounted() {
     this.fetchProducts();
-    this.fetchCart();
+    //this.fetchCart();
   },
   components: {
     ProduitList,
