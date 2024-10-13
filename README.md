@@ -1,7 +1,7 @@
 # Test KATA 
 
 
-## Install et démarrage de projet Kata (Symfony 6.4)
+## Installer et démarrer de projet Kata (Symfony 6.4)
 
 ```console
 git clone ...
@@ -18,7 +18,6 @@ Creation de base de donneé & migrations
 
 ```console
 bin/console doctrine:database:create
-bin/console make:migration
 bin/console doctrine:migrations:migrate
 ```
 
